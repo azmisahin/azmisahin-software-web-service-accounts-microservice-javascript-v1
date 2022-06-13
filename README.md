@@ -1,18 +1,11 @@
 # Introduction
-Software webpack template for nodejs javascript scripting language : version 0.1
+Microservices split the functionality into smaller services so each service can scale independently
 
-🔖: releasing / 0.1.2
+🔖: releasing / 0.0.0
 
 ## Example
 ```js
-// package define
-const Template = require('../src')
 
-// module instance
-var template = new Template()
-
-// a normal status code is returned when the package runs successfully.
-process.exit(template instanceof Template == true ? 0 : 1)
 ```
 
 # Getting Started
