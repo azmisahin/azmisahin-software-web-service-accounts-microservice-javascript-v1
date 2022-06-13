@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Library for node js projects.
+ * Microservices split the functionality into smaller services so each service can scale independently
  */
 
 /**
@@ -43,7 +43,7 @@ class Template {
 }
 
 /**
- * Template Library
+ * Microservices split the functionality into smaller services so each service can scale independently
  * @module template
  */
 module.exports = Template
