@@ -45,3 +45,83 @@ services:
 
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
     # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+ # data service
+  data-service:
+    container_name: "${DATABASE_SERVICE_NAME}"
+    image: postgres:${DATABASE_SERVICE_VERSION}
+    ports:
+      - "${DATABASE_SERVICE_HOST_PORT}:${DATABASE_SERVICE_APP_PORT}"
+    volumes:
+      # The location of the folder where Dockers persistent data is stored
+      # - "../.postgresql/data:/var/lib/postgresql/data"
+      # Startup scripts used to boot the DB [ account ] Single
+      - "../.module/postgresql/data/service:/docker-entrypoint-initdb.d"
+      # Startup scripts used to boot the DB [ account ]
+      # - "../.module/postgresql/data/service:/service" Multiple      
+      # Startup scripts used to boot the DB [ apis ]
+      # - "../data/service:/docker-entrypoint-initdb.d"
+    environment:
+      ENV: ${APP_ENV}
+      APP_NAME: ${APP_NAME}
+      CONTAINER: ${CONTAINER}
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      SECRET_KEY: ${SECRET_KEY}
+
+      # postgres sql
+      POSTGRES_USER: "${DATABASE_SERVICE_USER}"
+      POSTGRES_PASSWORD: "${DATABASE_SERVICE_PASSWORD}"
+      POSTGRES_DB: "${DATABASE_SERVICE_CATALOG}"
+
+      # data service
+      DATABASE_SERVICE_VENDOR: "${DATABASE_SERVICE_VENDOR}"
+      DATABASE_SERVICE_VERSION: "${DATABASE_SERVICE_VERSION}"
+      DATABASE_SERVICE_NAME: "${DATABASE_SERVICE_NAME}"
+      DATABASE_SERVICE_DOMAIN: "${DATABASE_SERVICE_DOMAIN}"
+      DATABASE_SERVICE_HOST_PORT: "${DATABASE_SERVICE_HOST_PORT}"
+      DATABASE_SERVICE_APP_PORT: "${DATABASE_SERVICE_APP_PORT}"
+      DATABASE_SERVICE_USER: "${DATABASE_SERVICE_USER}"
+      DATABASE_SERVICE_PASSWORD: "${DATABASE_SERVICE_PASSWORD}"
+      DATABASE_SERVICE_CATALOG: "${DATABASE_SERVICE_CATALOG}"
+
+      # data service ui
+      DATABASE_SERVICE_UI_HOST_PORT: "${DATABASE_SERVICE_UI_HOST_PORT}"
+      PGADMIN_DEFAULT_EMAIL: "${AUTHORIZED_EMAIL}"
+      PGADMIN_DEFAULT_PASSWORD: "${AUTHORIZED_PASSWORD}"
+
+      # data service sql
+      DATABASE_SERVICE_CATALOG_SHEMAS: "${DATABASE_SERVICE_CATALOG_SHEMAS}"
+      DATABASE_SERVICE_AUTHENTICATION_ROLE: "${DATABASE_SERVICE_AUTHENTICATION_ROLE}"
+      DATABASE_SERVICE_ANONYMOUS_ROLE: "${DATABASE_SERVICE_ANONYMOUS_ROLE}"
+      DATABASE_SERVICE_USER_ROLE: "${DATABASE_SERVICE_USER_ROLE}"
+
+      # authorization
+      AUTHORIZATION_AUDIENCE_VALID: "${AUTHORIZATION_AUDIENCE_VALID}"
+      AUTHORIZATION_ISSUER_VALID: "${AUTHORIZATION_ISSUER_VALID}"
+      AUTHORIZATION_ROLE_CLAIM_KEY: "${AUTHORIZATION_ROLE_CLAIM_KEY}"
+      AUTHORIZATION_SECRET_BASE64: "${AUTHORIZATION_SECRET_BASE64}"
+      AUTHORIZATION_SECRET_KEY: "${AUTHORIZATION_SECRET_KEY}"
+      AUTHORIZATION_TOKEN_EXPIRATION: "${AUTHORIZATION_TOKEN_EXPIRATION}"
+      AUTHORIZATION_TOKEN_REFRES_EXPIRATION: "${AUTHORIZATION_TOKEN_REFRES_EXPIRATION}"
+
+ # data service ui application
+  data-service-ui:
+    container_name: "${DATABASE_SERVICE_UI_NAME}"
+    image: dpage/pgadmin4
+    ports:
+      - "${DATABASE_SERVICE_UI_HOST_PORT}:${DATABASE_SERVICE_UI_APP_PORT}"
+    volumes:
+      # This ensures that the connection information is preloaded into the pgAdmin instance in the container.
+      # this volume not loaded in submodule?
+      - "../.module/postgresql/data/service-ui/servers.json:/pgadmin4/servers.json"
+    environment:
+      # product
+      ENV: "${APP_ENV}"
+
+      # data service ui
+      PGADMIN_DEFAULT_EMAIL: "${AUTHORIZED_EMAIL}"
+      PGADMIN_DEFAULT_PASSWORD: "${AUTHORIZED_PASSWORD}"
+    links:
+      - "data-service:data-service"
+    depends_on:
+      - "data-service"      
