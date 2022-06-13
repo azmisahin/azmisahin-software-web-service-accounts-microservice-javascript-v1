@@ -1,3 +1,7 @@
 [submodule ".module/postgresql"]
 	path = .module/postgresql
 	url = https://github.com/azmisahin/azmisahin-software-data-service-application-postgresql-c-v1.git
+[submodule ".module/rest"]
+	path = .module/rest
+	url = https://github.com/azmisahin/azmisahin-software-web-service-rest-postgrest-heskell-v1.git
+	branch = main
