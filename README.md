@@ -1,7 +1,7 @@
 # Introduction
 Microservices split the functionality into smaller services so each service can scale independently
 
-🔖: releasing / 0.0.0
+🔖: releasing / 0.0.1
 
 ## Example
 ```js
