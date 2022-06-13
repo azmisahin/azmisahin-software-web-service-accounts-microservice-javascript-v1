@@ -1,6 +1,6 @@
 {
   "name": "micro-service-javascript",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Microservices split the functionality into smaller services so each service can scale independently",
   "main": "src",
   "directories": {
